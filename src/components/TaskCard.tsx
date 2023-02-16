@@ -11,9 +11,7 @@ type Props = {
 };
 
 const TaskCard = ({ header, description, id, tasks, setTasks }: Props) => {
-    console.log('TCL: TaskCard -> tasks', tasks);
     const [isDescriptionShown, setIsDescriptionShown] = useState(false);
-    console.log('TCL: TaskCard -> isDescriptionShown', isDescriptionShown);
 
     const onHover = () => {
         setIsDescriptionShown(true);
@@ -25,9 +23,7 @@ const TaskCard = ({ header, description, id, tasks, setTasks }: Props) => {
 
     const deleteTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const id = e.currentTarget.id;
-        console.log('TCL: deleteTask -> id', id);
         const remainingTasks = tasks.filter((task) => task.id !== Number(id));
-        console.log('TCL: deleteTask -> remainingTasks', remainingTasks);
         setTasks([...remainingTasks]);
     };
 
@@ -36,6 +32,7 @@ const TaskCard = ({ header, description, id, tasks, setTasks }: Props) => {
             className="relative block max-w-sm  rounded-lg p-2 shadow hover:bg-gray-100"
             onMouseEnter={onHover}
             onMouseLeave={onLeave}
+            key={id}
         >
             <button
                 id={`${id}`}
@@ -44,7 +41,7 @@ const TaskCard = ({ header, description, id, tasks, setTasks }: Props) => {
             >
                 x
             </button>
-            <h5 className="text-2xl font-bold tracking-tight text-gray-900 ">{header}</h5>
+            <h5 className="text-xl font-bold tracking-tight text-gray-900 ">{header}</h5>
             {isDescriptionShown && <p className="font-normal text-gray-700">{description}</p>}
         </div>
     );

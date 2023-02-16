@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import dayjs, { extend } from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 
-// import weekOfYear from 'dayjs/plugin/weekOfYear';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
@@ -12,7 +10,6 @@ import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear';
 import TaskCard from './TaskCard';
 import TaskForm from './TaskForm';
 
-// dayjs.extend(weekOfYear);
 dayjs.extend(quarterOfYear);
 dayjs.extend(isoWeek);
 dayjs.extend(isLeapYear);
@@ -97,10 +94,10 @@ const Table = () => {
             <div className="mt-6 flex flex-col">
                 <div className="flex flex-row justify-around">
                     {currentQuarterMonths.length &&
-                        currentQuarterMonths.map((month, i) => (
+                        currentQuarterMonths.map((month) => (
                             <h2
-                                className="mt-0 mb-2 text-4xl font-medium leading-tight text-gray-800"
                                 key={month}
+                                className="mt-0 mb-2 text-4xl font-medium leading-tight text-gray-800"
                             >
                                 {month}
                             </h2>
@@ -121,31 +118,29 @@ const Table = () => {
                             tasks.map(
                                 (task) =>
                                     task.quarter === quarter && (
-                                        <>
-                                            <tr key={task.id}>
-                                                {currentQuarterWeeks.map((week) => (
-                                                    <td
-                                                        key={week.id}
-                                                        className={`${
-                                                            task?.weekIds?.includes(week.id)
-                                                                ? task.color
-                                                                : ''
-                                                        } max-w-xs break-all border border-gray-400 p-2`}
-                                                    >
-                                                        {task?.weekIds?.includes(week.id) &&
-                                                            week.id === task?.weekIds[0] && (
-                                                                <TaskCard
-                                                                    header={task.text}
-                                                                    description={task.description}
-                                                                    id={task.id}
-                                                                    tasks={tasks}
-                                                                    setTasks={setTasks}
-                                                                />
-                                                            )}
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                        </>
+                                        <tr key={task.id}>
+                                            {currentQuarterWeeks.map((week) => (
+                                                <td
+                                                    key={week.id}
+                                                    className={`${
+                                                        task?.weekIds?.includes(week.id)
+                                                            ? task.color
+                                                            : ''
+                                                    } max-w-xs break-all border border-gray-400 p-2`}
+                                                >
+                                                    {task?.weekIds?.includes(week.id) &&
+                                                        week.id === task?.weekIds[0] && (
+                                                            <TaskCard
+                                                                header={task.text}
+                                                                description={task.description}
+                                                                id={task.id}
+                                                                tasks={tasks}
+                                                                setTasks={setTasks}
+                                                            />
+                                                        )}
+                                                </td>
+                                            ))}
+                                        </tr>
                                     ),
                             )}
                     </tbody>
