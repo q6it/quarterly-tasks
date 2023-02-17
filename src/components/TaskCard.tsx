@@ -1,20 +1,18 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, memo } from 'react';
 import CustomModal from './CustomModal';
 
 import { TaskProps, TasksProps } from './Table';
 
-type Props = {
+type TaskCardProps = {
     header: string;
     description: string;
     id: number;
     tasks: TasksProps[];
     setTasks: Dispatch<SetStateAction<TasksProps[]>>;
     task: TaskProps;
-    // setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const TaskCard = ({ header, description, id, tasks, setTasks, task }: Props) => {
-    const [isDescriptionShown, setIsDescriptionShown] = useState(false);
+const TaskCard = memo(({ header, description, id, tasks, setTasks, task }: TaskCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const deleteTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -61,6 +59,6 @@ const TaskCard = ({ header, description, id, tasks, setTasks, task }: Props) => 
             </div>
         </>
     );
-};
+});
 
 export default TaskCard;

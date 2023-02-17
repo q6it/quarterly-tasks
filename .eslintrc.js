@@ -1,5 +1,17 @@
 module.exports = {
-    extends: ['plugin:react/recommended', 'plugin:react/jsx-runtime'],
+    root: true,
+    parser: '@typescript-eslint/parser',
+    plugins: ['@typescript-eslint', '@typescript-eslint/eslint-plugin'],
+    extends: [
+        'plugin:react/recommended',
+        'plugin:react/jsx-runtime',
+        'eslint:recommended',
+        'plugin:prettier/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/recommended',
+        'plugin:import/typescript',
+        ,
+    ],
     parserOptions: {
         tsconfigRootDir: __dirname,
         project: './tsconfig.json',
@@ -34,6 +46,7 @@ module.exports = {
                     '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.',
             },
         ],
+        'no-unused-vars': 'error',
         'prefer-destructuring': ['error', { object: true, array: false }],
         'import/prefer-default-export': ['off'],
         'arrow-body-style': ['error', 'as-needed'],
@@ -53,6 +66,7 @@ module.exports = {
         'jsx-a11y/label-has-associated-control': ['off'],
 
         '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
+        // '@typescript-eslint/no-unused-vars': ['error'],
         '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
         '@typescript-eslint/no-empty-function': ['error'],
     },
