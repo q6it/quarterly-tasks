@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
+import dayjs from 'dayjs';
 import Modal from 'react-modal';
 
 type CustomModalProps = {
@@ -6,6 +7,8 @@ type CustomModalProps = {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     header: string;
     description: string;
+    startDate: string;
+    endDate: string;
 };
 
 const customStyles = {
@@ -22,9 +25,14 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-const CustomModal = ({ isModalOpen, setIsModalOpen, header, description }: CustomModalProps) => {
-    console.log('%c Log:', 'background: #2C2C2C; color: #18C828;', 'modal open');
-
+const CustomModal = ({
+    isModalOpen,
+    setIsModalOpen,
+    header,
+    description,
+    startDate,
+    endDate,
+}: CustomModalProps) => {
     const handleClose = () => {
         setIsModalOpen(false);
     };
@@ -41,23 +49,20 @@ const CustomModal = ({ isModalOpen, setIsModalOpen, header, description }: Custo
             >
                 <div className="modal-dialog modal-dialog-centered pointer-events-none relative w-auto">
                     <div className="modal-content pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding p-1 text-current outline-none">
-                        <div className="modal-header flex flex-shrink-0 items-center justify-between rounded-t-md border-b border-gray-200 py-4">
+                        <div className="modal-header flex flex-shrink-0 flex-col  rounded-t-md border-b border-gray-200 py-2">
                             <h5
-                                className="text-xl font-medium leading-normal text-gray-800"
+                                className="break-words text-xl font-medium leading-normal text-gray-800"
                                 id="modal-header"
                             >
                                 {header}
                             </h5>
-                            <button
-                                type="button"
-                                className="btn-close box-content h-4 w-4 rounded-none border-none p-1 text-black opacity-50 hover:text-black hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            ></button>
+                            <p className="my-2 text-xs text-slate-500">
+                                {dayjs(startDate).format('MMM DD')} -{' '}
+                                {dayjs(endDate).format('MMM DD')}
+                            </p>
                         </div>
-                        <div className="modal-body relative mt-4 p-1">
-                            <p className=" text-slate-500">Dates:{}</p>
-                            <p>Description: {description}</p>
+                        <div className="modal-body relative my-2 max-w-xs p-1">
+                            <p>{description}</p>
                         </div>
                         <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t border-gray-200 pt-6">
                             <button

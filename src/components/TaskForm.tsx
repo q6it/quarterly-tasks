@@ -39,7 +39,6 @@ const TaskForm = ({
     setQuarter,
 }: TaskFormProps) => {
     const addRow = (e: React.SyntheticEvent) => {
-        console.log('%c Log:', 'background: #2C2C2C; color: #18C828;', 'submit');
         e.preventDefault();
         if (tasks.length === 10 || !task.start || !task.end || !task.header) return;
 

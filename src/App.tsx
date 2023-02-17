@@ -1,9 +1,4 @@
-import { useState } from 'react';
-// import Modal from 'react-modal';
-
 import Table from './components/Table';
-
-// Modal.setAppElement('#root');
 
 function App() {
     return (

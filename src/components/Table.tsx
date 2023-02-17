@@ -9,7 +9,6 @@ import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear';
 
 import TaskCard from './TaskCard';
 import TaskForm from './TaskForm';
-import CustomModal from './CustomModal';
 
 dayjs.extend(quarterOfYear);
 dayjs.extend(isoWeek);
@@ -23,6 +22,8 @@ export interface TasksProps {
     quarter: number;
     color: string;
     description: string;
+    start: string;
+    end: string;
 }
 export interface TaskProps {
     header: string;
@@ -33,17 +34,17 @@ export interface TaskProps {
 }
 
 const Table = () => {
-    const [task, setTask] = useState<TaskProps>({
+    const [lastTask, setLastTask] = useState<TaskProps>({
         header: '',
         start: '',
         end: '',
         quarter: 1,
         description: '',
     });
+
     const [tasks, setTasks] = useState<TasksProps[]>([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    console.log('TCL: TaskCard -> isModalOpen', isModalOpen);
 
     const currentQuarter = dayjs().quarter();
     const [quarter, setQuarter] = useState(currentQuarter);
@@ -86,19 +87,13 @@ const Table = () => {
 
     return (
         <>
-            <CustomModal
-                isModalOpen={isModalOpen}
-                setIsModalOpen={setIsModalOpen}
-                header={task.header}
-                description={task.description}
-            />
             <TaskForm
-                task={task}
+                task={lastTask}
+                setTask={setLastTask}
                 tasks={tasks}
                 setTasks={setTasks}
                 quarter={quarter}
                 currentQuarterWeeks={currentQuarterWeeks}
-                setTask={setTask}
                 setQuarter={setQuarter}
             />
             <div className="mt-6 flex flex-col">
@@ -146,7 +141,7 @@ const Table = () => {
                                                                 id={task.id}
                                                                 tasks={tasks}
                                                                 setTasks={setTasks}
-                                                                setIsModalOpen={setIsModalOpen}
+                                                                task={task}
                                                             />
                                                         )}
                                                 </td>
