@@ -7,9 +7,9 @@ dayjs.extend(weekOfYear);
 
 import { TaskProps, TasksProps } from './Table';
 
-type Props = {
+type TaskFormProps = {
     task: {
-        text: string;
+        header: string;
         start: string;
         end: string;
         quarter: number;
@@ -37,9 +37,11 @@ const TaskForm = ({
     quarter,
     setTask,
     setQuarter,
-}: Props) => {
-    const addRow = () => {
-        if (tasks.length === 10 || !task.start || !task.end || !task.text) return;
+}: TaskFormProps) => {
+    const addRow = (e: React.SyntheticEvent) => {
+        console.log('%c Log:', 'background: #2C2C2C; color: #18C828;', 'submit');
+        e.preventDefault();
+        if (tasks.length === 10 || !task.start || !task.end || !task.header) return;
 
         const startWeek = dayjs(task.start).week();
         const endWeek = dayjs(task.end).week();
@@ -57,12 +59,12 @@ const TaskForm = ({
 
         setTasks([
             ...tasks,
-            { ...task, id, weekIds, text: task.text, quarter, color: 'bg-teal-500' },
+            { ...task, id, weekIds, header: task.header, quarter, color: 'bg-teal-100' },
         ]);
     };
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTask({ ...task, text: e.currentTarget.value });
+        setTask({ ...task, header: e.currentTarget.value });
     };
 
     const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,67 +85,75 @@ const TaskForm = ({
 
     return (
         <>
-            <div className="m-auto flex max-w-md flex-col">
-                <div className="mt-6 flex flex-col">
-                    <div className="mt-6 flex items-center justify-between">
-                        <label
-                            htmlFor="task-input"
-                            className="form-label w-55 inline-block text-gray-700"
-                        >
-                            Task name
-                        </label>
-                        <input
-                            type="text"
-                            className=" text-basefont-normal text-gray-700transition w-9/12 rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
-                            id="task-input"
-                            placeholder="Add task name here"
-                            onChange={onNameChange}
-                        />
+            <form onSubmit={addRow}>
+                <div className="m-auto flex max-w-md flex-col">
+                    <div className="mt-6 flex flex-col">
+                        <div className="mt-6 flex items-center justify-between">
+                            <label
+                                htmlFor="task-input"
+                                className="form-label w-55 inline-block text-gray-700"
+                            >
+                                Task name
+                            </label>
+                            <input
+                                type="text"
+                                className=" text-basefont-normal text-gray-700transition w-9/12 rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
+                                id="task-input"
+                                placeholder="Add task name here"
+                                required
+                                onChange={onNameChange}
+                            />
+                        </div>
+                        <div className="mt-6 flex items-center justify-between">
+                            <div>
+                                <label
+                                    htmlFor="task-start"
+                                    className="form-label mb-2 inline-block text-gray-700"
+                                >
+                                    Start
+                                </label>
+                                <input
+                                    id="task-start"
+                                    type="date"
+                                    className="border-gray-300bg-white text-basefont-normal text-gray-700transition ml-2 rounded border border-solid bg-clip-padding px-3 py-1.5 ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
+                                    required
+                                    onChange={changeStartDate}
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    htmlFor="task-end"
+                                    className="form-label mb-2 inline-block text-gray-700"
+                                >
+                                    End
+                                </label>
+                                <input
+                                    id="task-end"
+                                    type="date"
+                                    className="ml-2 rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5  text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
+                                    required
+                                    onChange={changeEndDate}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div className="mt-6 flex items-center justify-between">
-                        <div>
-                            <label
-                                htmlFor="task-start"
-                                className="form-label mb-2 inline-block text-gray-700"
-                            >
-                                Start
-                            </label>
-                            <input
-                                id="task-start"
-                                type="date"
-                                className="border-gray-300bg-white text-basefont-normal text-gray-700transition ml-2 rounded border border-solid bg-clip-padding px-3 py-1.5 ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
-                                onChange={changeStartDate}
-                            />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="task-end"
-                                className="form-label mb-2 inline-block text-gray-700"
-                            >
-                                End
-                            </label>
-                            <input
-                                id="task-end"
-                                type="date"
-                                className="ml-2 rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5  text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
-                                onChange={changeEndDate}
-                            />
-                        </div>
+                    <textarea
+                        className="form-control mt-6 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
+                        id="task-description"
+                        placeholder="Task description message"
+                        onChange={changeDescription}
+                    ></textarea>
+                    <div className="flex justify-center">
+                        <button
+                            type="submit"
+                            // onSubt={addRow}
+                            className="mt-4 rounded bg-teal-500  py-2 px-4 font-medium text-white hover:bg-teal-700"
+                        >
+                            Add task
+                        </button>
                     </div>
                 </div>
-                <textarea
-                    className="form-control mt-6 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-300 focus:bg-white focus:text-gray-700 focus:outline-none"
-                    id="task-description"
-                    placeholder="Task description message"
-                    onChange={changeDescription}
-                ></textarea>
-            </div>
-            <button
-                onClick={addRow}
-                className="mt-4 rounded bg-teal-500  py-2 px-4 font-medium text-white hover:bg-teal-700"
-            >
-                Add task
-            </button>
+            </form>
         </>
     );
 };

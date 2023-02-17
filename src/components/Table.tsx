@@ -9,6 +9,7 @@ import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear';
 
 import TaskCard from './TaskCard';
 import TaskForm from './TaskForm';
+import CustomModal from './CustomModal';
 
 dayjs.extend(quarterOfYear);
 dayjs.extend(isoWeek);
@@ -18,13 +19,13 @@ dayjs.extend(isoWeeksInYear);
 export interface TasksProps {
     id: number;
     weekIds: number[];
-    text: string;
+    header: string;
     quarter: number;
     color: string;
     description: string;
 }
 export interface TaskProps {
-    text: string;
+    header: string;
     start: string;
     end: string;
     quarter: number;
@@ -33,13 +34,16 @@ export interface TaskProps {
 
 const Table = () => {
     const [task, setTask] = useState<TaskProps>({
-        text: '',
+        header: '',
         start: '',
         end: '',
         quarter: 1,
         description: '',
     });
     const [tasks, setTasks] = useState<TasksProps[]>([]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    console.log('TCL: TaskCard -> isModalOpen', isModalOpen);
 
     const currentQuarter = dayjs().quarter();
     const [quarter, setQuarter] = useState(currentQuarter);
@@ -82,6 +86,12 @@ const Table = () => {
 
     return (
         <>
+            <CustomModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                header={task.header}
+                description={task.description}
+            />
             <TaskForm
                 task={task}
                 tasks={tasks}
@@ -131,11 +141,12 @@ const Table = () => {
                                                     {task?.weekIds?.includes(week.id) &&
                                                         week.id === task?.weekIds[0] && (
                                                             <TaskCard
-                                                                header={task.text}
+                                                                header={task.header}
                                                                 description={task.description}
                                                                 id={task.id}
                                                                 tasks={tasks}
                                                                 setTasks={setTasks}
+                                                                setIsModalOpen={setIsModalOpen}
                                                             />
                                                         )}
                                                 </td>
@@ -148,13 +159,13 @@ const Table = () => {
                 <div className="mt-5 flex justify-between">
                     <button
                         onClick={handlePrev}
-                        className="rounded bg-teal-100 py-2 px-4 font-bold text-slate-800 hover:bg-teal-200"
+                        className="rounded bg-gray-200 py-2 px-4 font-bold text-slate-800 hover:bg-teal-200"
                     >
                         Previous
                     </button>
                     <button
                         onClick={handleNext}
-                        className="rounded bg-teal-100 py-2 px-4 font-bold text-slate-800 hover:bg-teal-200"
+                        className="rounded bg-gray-200 py-2 px-4 font-bold text-slate-800 hover:bg-teal-200"
                     >
                         Next
                     </button>

@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
-// import Table from './Test';
+// import Modal from 'react-modal';
+
 import Table from './components/Table';
+
+// Modal.setAppElement('#root');
 
 function App() {
     return (
-        <div className="App">
+        <div className="App" id="app">
             <h1 className="mt-0 mb-2 text-center text-5xl font-bold leading-tight text-gray-800">
                 Task planner
             </h1>
-            <Table />
+            <div className="flex flex-col justify-center px-40">
+                <Table />
+            </div>
         </div>
     );
 }
